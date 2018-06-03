@@ -20,8 +20,8 @@ type ResAddr     =           String
 data Config_Autoexec
     = Config_Autoexec
         {
-            isEnabled    ::    !Bool,
-            timeSec      ::    ! Int,
+            isEnabled    :: !   Bool,
+            timeSec      :: !    Int,
             execCommands :: ![String]
         }
     deriving Show
@@ -29,11 +29,11 @@ data Config_Autoexec
 data Config 
     = Config
         {
-            serverInfo ::     !ServerInfo,
-            botName    ::         !String,
-            botOAuth   ::         !String,
-            channel    ::         !String,
-            commands   ::      ![Command],
+            serverInfo :: !     ServerInfo,
+            botName    :: !         String,
+            botOAuth   :: !         String,
+            channel    :: !         String,
+            commands   :: !      [Command],
             autoExec   :: !Config_Autoexec
         }
     deriving Show

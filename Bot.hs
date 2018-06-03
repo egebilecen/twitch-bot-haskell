@@ -8,6 +8,7 @@ module Bot (
 import System.IO
 import Data.List
 import Text.Regex.Posix
+import Data.Maybe (fromJust)
 
 -- | Custom imports
 import Types
@@ -19,10 +20,16 @@ handleRes hdl res channel = do
     if "PING" `isInfixOf` res then
         sendPong hdl "tmi.twitch.tv"
     else if "PRIVMSG" `isInfixOf` res then
-        --TODO: message will be handled if it's a command in the Config data
-        print $ Parser.extractMsgInfo res
+        if commandRes /= Nothing then
+            writeToChat hdl channel $ fromJust $ fmap snd commandRes
+        else
+            return ()
     else
         return ()
+
+    where
+        (nickname, chatMsg) = Parser.extractMsgInfo res
+        commandRes          = Parser.findCommand chatMsg
 
 doLogin     :: Handle       -> BotUsername -> BotOAuth     -> IO ()
 doLogin hdl nickname oauth = do
@@ -36,7 +43,9 @@ writeToChat hdl channel msg = do
 joinChannel   :: Handle     -> Channel     -> IO ()
 joinChannel hdl channel = do
     writeToSystem hdl $ "JOIN #" ++ channel
-    writeToChat   hdl channel $ "Bot aktive edildi."
+    writeToChat   hdl channel $ initText
+    where
+        initText = "Eveet. Vücuduma gelen elektiriği hissedebiliyorum. Sahneye çıkma vaktim gelmiş olmalı. (Bot Aktif)"
 
 -- | Private Functions
 writeToSystem :: Handle     -> String      -> IO ()

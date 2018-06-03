@@ -1,8 +1,9 @@
 module Config (
-            config,
-     getServerInfo,
-        getBotInfo,
-    getChannelInfo
+             config,
+      getServerInfo,
+         getBotInfo,
+     getChannelInfo,
+    getCommandsInfo
 ) where
 
 import Types
@@ -15,27 +16,30 @@ config =
             botName    = "fat_bit_bot",
             botOAuth   = "oauth:bw8cbfbkw2zjyv01e7f68wkbtko6p0",
             channel    = "fat_bit",
-            commands   = [
-                ("help",        "Henüz bana bunun cevabını öğretmediler."),
-                ("bot_info",    "Merhaba. Ben @fat_bit tarafından Haskell dili kullanılarak yazılmış bir botum."),
-                ("source_code", "Kaynak kodumu henüz daha paylaşmadılar. :(")
+            commands   = [ --chat commands
+                ("!help",        "Kanaldaki komutlara kanal açıklamasından ulaşabilirsin."),
+                ("!bot_info",    "Merhaba. Ben @fat_bit tarafından Haskell dili kullanılarak yazılmış bir botum."),
+                ("!source_code", "Kaynak koduma https://github.com/egebilecen/twitch-bot-haskell adresinden ulaşabilirsin!")
             ],
             autoExec   = Config_Autoexec
                             {
                                 isEnabled    = True,
                                 timeSec      =  300,
                                 execCommands = [
-                                    "help"
+                                    "!help"
                                 ]
                             }
         }
 
 -- | Public Functions
-getServerInfo  :: Config -> ServerInfo
-getServerInfo (Config {serverInfo = a}) = a
+getServerInfo   :: ServerInfo
+getServerInfo   = serverInfo config
 
-getBotInfo     :: Config -> BotInfo 
-getBotInfo (Config {botName = a, botOAuth = b}) = (a,b)
+getBotInfo      :: BotInfo 
+getBotInfo      = (botName config, botOAuth config)
 
-getChannelInfo :: Config -> Channel
-getChannelInfo (Config {channel=a}) = a
+getChannelInfo  :: Channel
+getChannelInfo  = channel config
+
+getCommandsInfo :: [Command]
+getCommandsInfo = commands config

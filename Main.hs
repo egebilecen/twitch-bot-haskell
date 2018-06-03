@@ -6,20 +6,19 @@ import Types
 import qualified Config as Config
 import qualified Bot    as    Bot
 
-config :: Config
-config = Config.config
-
 channelName :: Channel
-channelName = Config.getChannelInfo config
+channelName = Config.getChannelInfo
 
 main :: IO ()
 main = do
-        let (sAddr, sPort)  = Config.getServerInfo config --server addr
-        let (bName, bOAuth) = Config.getBotInfo    config --bot name and oauth
+        let (sAddr, sPort)  = Config.getServerInfo --server addr
+        let (bName, bOAuth) = Config.getBotInfo    --bot name and oauth
 
         addr <- resolve sAddr $ show sPort
         sock <- open addr
         hdl  <- convertSocket sock
+
+        hSetEncoding hdl utf8
 
         Bot.doLogin     hdl bName bOAuth
         Bot.joinChannel hdl channelName

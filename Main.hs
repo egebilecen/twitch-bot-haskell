@@ -22,7 +22,8 @@ main = do
 
         Bot.doLogin     hdl bName bOAuth
         Bot.joinChannel hdl channelName
-
+        
+        putStrLn "[?] Bot activated."
         mainLoop hdl --enter to loop
     where
         resolve host port = do

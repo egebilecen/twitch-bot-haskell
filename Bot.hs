@@ -13,6 +13,7 @@ import Data.Maybe (fromJust)
 -- | Custom imports
 import Types
 import qualified Parser
+import qualified Helper
 
 -- | Public Functions
 handleRes   :: Handle       -> ServerRes   -> Channel     -> IO ()
@@ -21,8 +22,10 @@ handleRes hdl res channel = do
         sendPong hdl "tmi.twitch.tv"
     else if "PRIVMSG" `isInfixOf` res then
         if commandRes /= Nothing then
-            writeToChat hdl channel $ fromJust $ fmap snd commandRes
+            -- | There is special command
+            writeToChat hdl channel $ Helper.getTupleSecondElem $ fromJust commandRes
         else
+            -- | An ordinary message.
             return ()
     else
         return ()

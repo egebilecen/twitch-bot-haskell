@@ -20,7 +20,7 @@ findCommand msg =
         ret
     where
         commandsList = Config.getCommandsInfo
-        ret = parseResult $ filter (\(a,_) -> a == msg) commandsList
+        ret = parseResult $ filter (\(a,_,_) -> a == msg) commandsList
             where
                 parseResult :: [Command] -> Maybe Command
                 parseResult pRes

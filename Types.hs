@@ -17,7 +17,8 @@ type ServerRes   = String
 type ResAddr     = String
 
 data CommandFlag
-    = Reply
+    = ReplyStart
+    | Special
     deriving (Show, Eq)
 
 -- | Config Data Defination

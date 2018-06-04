@@ -2,7 +2,8 @@ module Helper (
       getTupleFirstElem,
      getTupleSecondElem,
       getTupleThirdElem,
-     applyFlagToMessage
+     applyFlagToMessage,
+                getFlag
 ) where
 
 import Types
@@ -17,7 +18,10 @@ getTupleSecondElem (_, b, _) = b
 getTupleThirdElem  :: Command -> Maybe CommandFlag
 getTupleThirdElem (_, _, c)  = c
 
+getFlag            :: Command -> Maybe CommandFlag
+getFlag (_,_,f) = f
+
 applyFlagToMessage :: Maybe CommandFlag -> String -> ChatMsg
 applyFlagToMessage flag res
-    | flag == Nothing      = res
-    | flag == Just Reply   = "@" ++ res ++ ", "
+    | flag == Just ReplyStart   = "@" ++ res ++ ", "
+    | otherwise                 = ""

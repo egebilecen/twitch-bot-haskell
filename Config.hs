@@ -18,8 +18,9 @@ config =
             channel    = "fat_bit",
             commands   = [ --chat commands
                 ("!help",        "Bot komutlarına kanal açıklamasından ulaşabilirsiniz.",                                       Nothing),
-                ("!bot_info",    "Merhaba. Ben @fat_bit tarafından Haskell dili kullanılarak yazılmış bir botum.",           Just Reply),
-                ("!source_code", "Kaynak koduma https://github.com/egebilecen/twitch-bot-haskell adresinden ulaşabilirsin!", Just Reply)
+                ("!bot_info",    "Merhaba. Ben @fat_bit tarafından Haskell dili kullanılarak yazılmış bir botum.",           Just ReplyStart),
+                ("!source_code", "Kaynak koduma https://github.com/egebilecen/twitch-bot-haskell adresinden ulaşabilirsin!", Just ReplyStart),
+                ("!uptime",      "", Just Special)
             ],
             autoExec   = Config_Autoexec
                             {

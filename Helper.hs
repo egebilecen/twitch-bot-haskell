@@ -21,7 +21,8 @@ getTupleThirdElem (_, _, c)  = c
 getFlag            :: Command -> Maybe CommandFlag
 getFlag (_,_,f) = f
 
-applyFlagToMessage :: Maybe CommandFlag -> String -> ChatMsg
-applyFlagToMessage flag res
-    | flag == Just ReplyStart   = "@" ++ res ++ ", "
-    | otherwise                 = ""
+applyFlagToMessage :: Maybe CommandFlag -> Nickname -> ChatMsg -> ChatMsg
+applyFlagToMessage flag nickname msg
+    | flag == Just ReplyStart   = "@" ++ nickname ++ ", " ++ msg
+    | flag == Just ReplyEnd     = msg ++ " @" ++ nickname
+    | otherwise                 = msg

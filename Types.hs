@@ -18,6 +18,7 @@ type ResAddr     = String
 
 data CommandFlag
     = ReplyStart
+    | ReplyEnd
     | Special
     deriving (Show, Eq)
 

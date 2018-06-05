@@ -24,7 +24,7 @@ handleRes hdl res channel = do
     else if "PRIVMSG" `isInfixOf` res then
         if commandRes /= Nothing then
             -- | There is special command
-            writeToChat hdl channel $ Helper.applyFlagToMessage commandFlag nickname ++ (Helper.getTupleSecondElem $ fromJust commandRes)
+            writeToChat hdl channel $ Helper.applyFlagToMessage commandFlag nickname (Helper.getTupleSecondElem $ fromJust commandRes)
         else
             -- | An ordinary message
             return ()

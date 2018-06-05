@@ -24,6 +24,7 @@ findCommand msg =
         else if (Helper.getFlag $ fromJust ret) == Just Special then
             case Helper.getTupleFirstElem $ fromJust ret of
                 "!uptime" -> Just ("!uptime","Will be added soon.", Just Special)
+                _         -> Just ("","",Nothing)
         else
             ret
     where

@@ -10,14 +10,16 @@ import qualified Config
 import qualified Helper
 
 -- | Public Functions
-extractMsgInfo :: ServerRes -> (Nickname, ChatMsg)
+extractMsgInfo ::           ServerRes 
+               -> (Nickname, ChatMsg)
 extractMsgInfo res =
         (nickname, chatMsg)
     where
         nickname = res =~ "[a-zA-Z0-9_]+" :: String
         chatMsg  = last (getAllTextMatches $ res =~ "([a-zA-Z0-9ığüşöç!@#$&()\\-`.+,/\"'? -]+)" :: [String])
 
-findCommand    :: ChatMsg   -> Maybe Command
+findCommand    ::       ChatMsg
+               -> Maybe Command
 findCommand msg =
         if ret == Nothing then
             Nothing
@@ -35,8 +37,3 @@ findCommand msg =
                 parseResult pRes
                     | null pRes = Nothing
                     | otherwise = Just $ head pRes
-
--- | Private Functions
-getUptime :: Int -> Int
-getUptime sT =
-    0

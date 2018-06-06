@@ -36,13 +36,15 @@ main = do
             Socket.connect sock $ Socket.addrAddress addr
             return sock
 
-mainLoop :: Handle -> IO ()
+mainLoop :: Handle 
+         -> IO ()
 mainLoop hdl = do
     res <- hGetLine hdl
     Bot.handleRes hdl res channelName
     mainLoop hdl --loop
 
-convertSocket :: Socket.Socket -> IO Handle
+convertSocket :: Socket.Socket 
+              -> IO Handle
 convertSocket sock = do
     hdl <- Socket.socketToHandle sock ReadWriteMode
     hSetBuffering hdl NoBuffering

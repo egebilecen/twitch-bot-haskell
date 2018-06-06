@@ -15,7 +15,10 @@ import qualified Parser
 import qualified Helper
 
 -- | Public Functions
-handleRes   :: Handle       -> ServerRes   -> Channel     -> IO ()
+handleRes   ::    Handle       
+            -> ServerRes   
+            ->   Channel     
+            ->     IO ()
 handleRes hdl res channel = do
     -- handle ping request
     if "PING" `isInfixOf` res then
@@ -37,16 +40,24 @@ handleRes hdl res channel = do
         commandRes          = Parser.findCommand chatMsg
         commandFlag         = Helper.getTupleThirdElem $ fromJust commandRes
 
-doLogin     :: Handle       -> BotUsername -> BotOAuth     -> IO ()
+doLogin     ::      Handle       
+            -> BotUsername 
+            ->    BotOAuth     
+            ->       IO ()
 doLogin hdl nickname oauth = do
     writeToSystem hdl $ "PASS " ++    oauth
     writeToSystem hdl $ "NICK " ++ nickname
 
-writeToChat :: Handle       -> Channel     -> ChatMsg      -> IO ()
+writeToChat ::  Handle       
+            -> Channel     
+            -> ChatMsg      
+            ->   IO ()
 writeToChat hdl channel msg = do
     writeToSystem hdl $ "PRIVMSG #"++ channel ++ " :" ++ msg
 
-joinChannel :: Handle       -> Channel     -> IO ()
+joinChannel ::  Handle       
+            -> Channel     
+            ->   IO ()
 joinChannel hdl channel = do
     writeToSystem hdl $ "JOIN #" ++ channel
     writeToChat   hdl channel $ initText
@@ -54,10 +65,14 @@ joinChannel hdl channel = do
         initText = "Eveet. Vücuduma gelen elektiriği hissedebiliyorum. Sahneye çıkma vaktim gelmiş olmalı. (Bot Aktif)"
 
 -- | Private Functions
-writeToSystem :: Handle     -> String      -> IO ()
+writeToSystem :: Handle     
+              -> String      
+              ->  IO ()
 writeToSystem hdl cmd = do
     hPutStrLn hdl cmd
 
-sendPong      :: Handle     -> ResAddr     -> IO ()
+sendPong      ::  Handle     
+              -> ResAddr  
+              ->   IO ()
 sendPong hdl addr = 
     writeToSystem hdl $ "PONG :" ++ addr

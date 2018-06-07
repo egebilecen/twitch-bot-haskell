@@ -1,5 +1,7 @@
 import System.IO
 import qualified Network.Socket as Socket
+import Control.Concurrent  (forkIO)
+import Control.Monad      (forever)
 
 -- | Custom Imports
 import Types
@@ -14,6 +16,8 @@ main = do
         let (sAddr, sPort)  = Config.getServerInfo --server addr
         let (bName, bOAuth) = Config.getBotInfo    --bot name and oauth
 
+        putStrLn "[?] Creating connection."
+
         addr <- resolve sAddr $ show sPort
         sock <- open addr
         hdl  <- convertSocket sock
@@ -24,7 +28,10 @@ main = do
         Bot.joinChannel hdl channelName
         
         putStrLn "[?] Bot activated."
-        mainLoop hdl --enter to loop
+        
+        forkIO $ mainLoop hdl -- add to thread
+        
+        activateInteractiveMode
     where
         resolve host port = do
             let hints = Socket.defaultHints { Socket.addrSocketType = Socket.Stream }
@@ -36,16 +43,19 @@ main = do
             Socket.connect sock $ Socket.addrAddress addr
             return sock
 
+        convertSocket sock = do
+            hdl <- Socket.socketToHandle sock ReadWriteMode
+            hSetBuffering hdl NoBuffering
+            return hdl
+
 mainLoop :: Handle 
          -> IO ()
 mainLoop hdl = do
-    res <- hGetLine hdl
-    Bot.handleRes hdl res channelName
-    mainLoop hdl --loop
+    forever $  do
+        res <- hGetLine hdl
+        Bot.handleRes hdl res channelName
 
-convertSocket :: Socket.Socket 
-              -> IO Handle
-convertSocket sock = do
-    hdl <- Socket.socketToHandle sock ReadWriteMode
-    hSetBuffering hdl NoBuffering
-    return hdl
+-- | Interactive mode
+activateInteractiveMode :: IO ()
+activateInteractiveMode = do
+    print "Will be added."

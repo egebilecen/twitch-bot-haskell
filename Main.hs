@@ -5,8 +5,9 @@ import Control.Monad      (forever)
 
 -- | Custom Imports
 import Types
-import qualified Config as Config
-import qualified Bot    as    Bot
+import qualified      Config
+import qualified         Bot
+import qualified Interactive
 
 channelName :: Channel
 channelName = Config.getChannelInfo
@@ -31,7 +32,7 @@ main = do
         
         forkIO $ mainLoop hdl -- add to thread
         
-        activateInteractiveMode
+        Interactive.activate
     where
         resolve host port = do
             let hints = Socket.defaultHints { Socket.addrSocketType = Socket.Stream }
@@ -54,8 +55,3 @@ mainLoop hdl = do
     forever $  do
         res <- hGetLine hdl
         Bot.handleRes hdl res channelName
-
--- | Interactive mode
-activateInteractiveMode :: IO ()
-activateInteractiveMode = do
-    print "Will be added."

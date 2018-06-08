@@ -1,5 +1,6 @@
 import System.IO
-import qualified Network.Socket as Socket
+import qualified Network.Socket    as    Socket
+import qualified Control.Exception as Exception
 import Control.Concurrent  (forkIO)
 import Control.Monad      (forever)
 
@@ -32,18 +33,25 @@ main = do
         
         forkIO $ mainLoop hdl -- add to thread
         
-        Interactive.activate
+        Interactive.activate  -- activate interactive mode
     where
+        resolve :: String     -- sAddr
+                -> String     -- sPort
+                -> IO Socket.AddrInfo
         resolve host port = do
             let hints = Socket.defaultHints { Socket.addrSocketType = Socket.Stream }
             addr:_ <- Socket.getAddrInfo (Just hints) (Just host) (Just port)
             return addr
         
+        open ::  Socket.AddrInfo 
+             -> IO Socket.Socket
         open addr = do
             sock <- Socket.socket (Socket.addrFamily addr) (Socket.addrSocketType addr) (Socket.addrProtocol addr)
             Socket.connect sock $ Socket.addrAddress addr
             return sock
-
+        
+        convertSocket :: Socket.Socket
+                      ->     IO Handle
         convertSocket sock = do
             hdl <- Socket.socketToHandle sock ReadWriteMode
             hSetBuffering hdl NoBuffering

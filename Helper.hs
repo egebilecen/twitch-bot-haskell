@@ -3,7 +3,8 @@ module Helper (
      getTupleSecondElem,
       getTupleThirdElem,
      applyFlagToMessage,
-                getFlag
+                getFlag,
+              numToBool
 ) where
 
 import Types
@@ -34,6 +35,11 @@ applyFlagToMessage flag nickname msg
     | flag == Just ReplyEnd     = msg ++ " - @" ++ nickname
     | otherwise                 = msg
 
+numToBool          :: (Ord a, Num a) =>    a 
+                                     -> Bool
+numToBool num
+    | num > 0   =  True
+    | otherwise = False
 
 -- | Private Functions
 getUptime :: Int -> Int

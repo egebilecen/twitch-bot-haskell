@@ -31,12 +31,14 @@ main = do
         
         putStrLn "[?] Bot activated."
         
-        forkIO $ mainLoop hdl -- add to thread
+        -- | Threading
+        forkIO $ mainLoop  hdl -- Socket connection handler
+        -- | forkIO $ timerLoop hdl -- Automatic command executer handler
         
         Interactive.activate  -- activate interactive mode
     where
-        resolve :: String     -- sAddr
-                -> String     -- sPort
+        resolve ::             String -- sAddr
+                ->             String -- sPort
                 -> IO Socket.AddrInfo
         resolve host port = do
             let hints = Socket.defaultHints { Socket.addrSocketType = Socket.Stream }
@@ -58,8 +60,13 @@ main = do
             return hdl
 
 mainLoop :: Handle 
-         -> IO ()
+         ->  IO ()
 mainLoop hdl = do
     forever $  do
         res <- hGetLine hdl
         Bot.handleRes hdl res channelName
+
+timerLoop :: Handle
+          ->  IO ()
+timerLoop hdl = do
+    putStr "test"

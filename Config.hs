@@ -26,14 +26,15 @@ config =
                 -- | Special Commands
                 ("!uptime",      "", Just Special)
             ],
-            autoExec   = Config_Autoexec
-                            {
-                                isEnabled    = True,
-                                timeSec      =  300,
-                                execCommands = [
-                                    "!help"
-                                ]
-                            }
+            autoExec = 
+                Config_Autoexec
+                {
+                    isEnabled    = True,
+                    timeSec      =  300,
+                    execCommands = [
+                        "!help"
+                    ]
+                }
         }
 
 -- | Public Functions

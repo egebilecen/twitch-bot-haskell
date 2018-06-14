@@ -43,3 +43,11 @@ data Config
             autoExec   :: !Config_Autoexec
         }
     deriving Show
+
+data API_Config
+    = API_Config
+        {
+            clientID :: !String,
+            apiURL   :: !String
+        }
+    deriving Show

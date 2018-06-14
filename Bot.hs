@@ -41,7 +41,7 @@ handleRes hdl res channel = do
         commandFlag         = Helper.getTupleThirdElem $ fromJust commandRes
 
 doLogin     ::      Handle       
-            -> BotUsername 
+            -> BotUsername
             ->    BotOAuth     
             ->       IO ()
 doLogin hdl nickname oauth = do

@@ -3,10 +3,10 @@ module Interactive (
 ) where
 
 import Types
-import Data.List
 import Control.Monad (forever)
 
 import qualified Helper (numToBool)
+import qualified API
 
 -- | Private Variables
 cursor :: String -- Cursor display style

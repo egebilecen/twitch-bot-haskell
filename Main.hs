@@ -1,6 +1,5 @@
 import System.IO
-import qualified Network.Socket    as    Socket
-import qualified Control.Exception as Exception
+import qualified Network.Socket as Socket
 import Control.Concurrent  (forkIO)
 import Control.Monad      (forever)
 
@@ -32,8 +31,8 @@ main = do
         putStrLn "[?] Bot activated."
         
         -- | Threading
-        forkIO $ mainLoop  hdl -- Socket connection handler
-        -- | forkIO $ timerLoop hdl -- Automatic command executer handler
+        _ <- forkIO $ mainLoop  hdl -- Socket connection handler
+        -- | _ <- forkIO $ timerLoop hdl -- Automatic command executer handler
         
         Interactive.activate  -- activate interactive mode
     where

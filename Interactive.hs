@@ -4,8 +4,11 @@ module Interactive (
 
 import Types
 import Control.Monad (forever)
+import System.Exit   (exitSuccess)
+import System.IO     (Handle)
 
 import qualified Helper (numToBool)
+import qualified Bot
 import qualified API
 
 -- | Private Variables
@@ -13,27 +16,32 @@ cursor :: String -- Cursor display style
 cursor =  ">>"
 
 commandList :: [String]
-commandList =  ["help", "setTitle","setGame"]
+commandList =  ["help", "setTitle","setGame", "exit"]
 
 -- | Public Functions
-activate :: IO ()
-activate = do
+activate ::  Handle
+         -> Channel
+         ->   IO ()
+activate hdl channel = do
     putStrLn "[?] Interactive mode activated. Type \"help\" for command list.\n"
 
     forever $ do
         putStr cursor
         command <- getLine
         
-        processCommand command
+        processCommand hdl channel command
     where
-        processCommand :: String
-                       ->  IO ()
-        processCommand cmd = do
+        processCommand ::  Handle
+                       -> Channel
+                       ->  String
+                       ->   IO ()
+        processCommand hdl channel cmd = do
             if isCommand cmd then
                 case cmd' of
                     "help"     -> cmdHelp
                     "setTitle" -> cmdSetTitle $ unwords . extractParams $ cmd
                     "setGame"  -> cmdSetGame  $ unwords . extractParams $ cmd
+                    "exit"     -> cmdExit hdl channel
                     _          -> error "activate -> processCommand: Something got wrong."
             else
                 putStrLn "Command not found.\n"
@@ -61,6 +69,14 @@ activate = do
                 cmdSetGame game = do
                     putStrLn $ "Yayında oynanan oyun \""++ game ++"\" olarak değiştirildi."
                     putStr "\n" 
+                
+                cmdExit ::  Handle 
+                        -> Channel
+                        ->   IO ()
+                cmdExit hdl channel = do
+                    Bot.writeToChat hdl channel "Hayıır. Vücudumda akan elektirik azalmaya başladı. Sahneden inme vaktim gelmiş olmalı. (Bot Pasif)"
+                    Bot.exitChannel hdl channel 
+                    exitSuccess
 
                 cmd' = getCommand cmd
 

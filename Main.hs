@@ -31,10 +31,10 @@ main = do
         putStrLn "[?] Bot activated."
         
         -- | Threading
-        _ <- forkIO $ mainLoop  hdl -- Socket connection handler
-        -- | _ <- forkIO $ timerLoop hdl -- Automatic command executer handler
+        _ <- forkIO $ mainLoop  hdl          -- Socket connection handler
+        -- | _ <- forkIO $ timerLoop hdl     -- Automatic command executer handler
         
-        Interactive.activate  -- activate interactive mode
+        Interactive.activate hdl channelName -- activate interactive mode
     where
         resolve ::             String -- sAddr
                 ->             String -- sPort

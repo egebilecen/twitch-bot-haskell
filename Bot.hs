@@ -2,7 +2,8 @@ module Bot (
         doLogin,
     writeToChat,
       handleRes,
-    joinChannel
+    joinChannel,
+    exitChannel
 ) where
 
 import System.IO
@@ -63,6 +64,12 @@ joinChannel hdl channel = do
     writeToChat   hdl channel $ initText
     where
         initText = "Eveet. Vücuduma gelen elektiriği hissedebiliyorum. Sahneye çıkma vaktim gelmiş olmalı. (Bot Aktif)"
+
+exitChannel ::  Handle
+            -> Channel
+            ->   IO ()
+exitChannel hdl channel = do
+    writeToSystem hdl $ "PART " ++ channel 
 
 -- | Private Functions
 writeToSystem :: Handle     
